@@ -1,0 +1,15 @@
+<div class="background">
+  <div class="container">
+    <h1>Avanzatech <b>Financial</b></h1>
+
+    <app-typehead [toggleMode]="toggleMode" [autoCompleteData]="processedAutocompleteData" (onTyping)="onTypeheadListener($event)" (onSelection)="onTypeheadListener($event)"/>
+
+    @if (symbol) {
+      <app-chart [toggleMode]="toggleMode" [multi]="dataChart"/>
+      <div class = "toggle">
+        <app-toggles (onToggle)="onTogglesListener($event)"/>
+      </div>
+    }
+  </div>
+</div>
+

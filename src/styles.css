@@ -1,0 +1,58 @@
+
+html, body { 
+  box-sizing: border-box;
+  margin: 0;
+}
+            
+body { 
+  margin: 0; 
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif; 
+}
+
+.container h1{
+  font-size: 30px;
+  padding: 30px;
+  color: beige;
+}
+.background {
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('./assets/2569353.jpg');
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.container{
+  backdrop-filter: blur(100px);
+  width: fit-content;
+  height: fit-content;
+  margin-top: 100px;
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid rgba(245, 245, 220, 0.671);
+}
+.container app-chart, app-toggles{
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+app-chart {
+  height: 300px;
+}
+
+app-toggles{
+  width: 200px;
+}
+video{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
