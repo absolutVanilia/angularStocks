@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { TypeheadComponent } from "./components/typehead/typehead.component";
@@ -20,10 +20,11 @@ import { ChartData } from './models/data.model';
               TogglesComponent]
 })
 export class AppComponent {
-  title = 'AvanzatechFinancialKW';
 
   private requestService = inject(RequestService);
 
+  alertRenderStatus = false;
+  alertMessage = signal('Out of tokens');
   processedAutocompleteData: any = [];
   processedDailyData: any = [];
   processedMonthlyData: any = [];
@@ -31,10 +32,26 @@ export class AppComponent {
   dataChart!: ChartData[];
   toggleMode: string = "daily";
 
-  private processAutocompleteData(data: Autocomplete) {
+  changeAlertRender(){
+    this.alertRenderStatus = false;
+  }
+
+  private processAutocompleteData(data: any) {
     this.processedAutocompleteData.length = 0;
-    for (let option in data["bestMatches"]) {
-      this.processedAutocompleteData.push([data["bestMatches"][option]["1. symbol"], data["bestMatches"][option]["2. name"]]);
+    if(data.hasOwnProperty('Information')){
+      this.alertMessage.set('You are out of API tokens.')
+      this.alertRenderStatus = true;
+      setTimeout(()=>{this.changeAlertRender()}, 3000);
+    }
+
+    if(data["bestMatches"].length){
+      for (let match in data["bestMatches"]) {
+        this.processedAutocompleteData.push([data["bestMatches"][match]["1. symbol"], data["bestMatches"][match]["2. name"]]);
+      }
+    } else {
+      this.alertMessage.set('There are no matches for your search')
+      this.alertRenderStatus = true;
+      setTimeout(()=>{this.changeAlertRender()}, 3000);
     }
   }
 
@@ -99,12 +116,13 @@ export class AppComponent {
   }
 }
 
-  onTypeheadListener(event: [RequestType, string]) {
+  typeheadListener(event: [RequestType, string]) {
     if (event[1] !== this.symbol && (event[0] === "daily" || event[0] === "monthly")) {
       this.symbol = event[1];
       this.processedDailyData.length = 0;
       this.processedMonthlyData.length = 0;
     }
+    
     this.requestService.getData(event[0], event[1]).subscribe({
       next: (data: any) => {
         switch (event[0]) {
@@ -132,14 +150,14 @@ export class AppComponent {
         if (this.processedDailyData.length!==0) {
           this.dataChart = this.processedDailyData;
         } else {
-          this.onTypeheadListener(["daily", this.symbol]);
+          this.typeheadListener(["daily", this.symbol]);
         }
       } else if (this.toggleMode === "monthly") {
         console.log(this.toggleMode);
         if (this.processedMonthlyData.length!==0) {
           this.dataChart = this.processedMonthlyData;
         } else {
-          this.onTypeheadListener(["monthly", this.symbol]);
+          this.typeheadListener(["monthly", this.symbol]);
         }
       }
     }

@@ -1,8 +1,11 @@
 <div class="background">
+  @if (alertRenderStatus){
+    <div class="alert">{{alertMessage()}}</div>
+  }
   <div class="container">
     <h1>Avanzatech <b>Financial</b></h1>
 
-    <app-typehead [toggleMode]="toggleMode" [autoCompleteData]="processedAutocompleteData" (onTyping)="onTypeheadListener($event)" (onSelection)="onTypeheadListener($event)"/>
+    <app-typehead [toggleMode]="toggleMode" [autoCompleteData]="processedAutocompleteData" (typingEvent)="typeheadListener($event)" (onSelection)="typeheadListener($event)" k/>
 
     @if (symbol) {
       <app-chart [toggleMode]="toggleMode" [multi]="dataChart"/>

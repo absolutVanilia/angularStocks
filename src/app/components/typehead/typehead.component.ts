@@ -26,14 +26,17 @@ export class TypeheadComponent {
       Validators.pattern('^[^\\s]+.*$')],
   });
 
-  @Output() onTyping = new EventEmitter();
+  @Output() typingEvent = new EventEmitter();
   @Output() onSelection = new EventEmitter();
   @Input()  autoCompleteData!: [[string, string]];
   @Input() toggleMode!: string;
 
+  debouncer:any;
+
   onTypingHandler() {
     if (this.inputFormControl.valid) {
-      this.onTyping.emit(["autocomplete", this.inputFormControl.value]);
+      clearTimeout(this.debouncer);
+      this.debouncer = setTimeout(()=>{this.typingEvent.emit(["autocomplete", this.inputFormControl.value])}, 500)
     }
   }
 

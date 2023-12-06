@@ -9,14 +9,13 @@ import { DailyData, MonthlyData } from '../models/data.model';
 })
 export class RequestService {
 
-  private apiKey = "NKHGL9O85N1MO7O8" //"NKHGL9O85N1MO7O8";
+  private apiKey = "demo" //"NKHGL9O85N1MO7O8";
 
   constructor() { }
 
   http = inject(HttpClient);
 
   getData(type: RequestType, symbol: string) {
-    //symbol = "tesco";
 
     if (type === "autocomplete") {
       return this.http.get<Autocomplete>(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${symbol}&apikey=${this.apiKey}`)

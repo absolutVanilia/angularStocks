@@ -50,9 +50,3 @@ app-chart {
 app-toggles{
   width: 200px;
 }
-video{
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}

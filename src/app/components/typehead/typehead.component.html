@@ -1,14 +1,13 @@
-<form class="example-form">
-  <mat-form-field class="example-full-width">
-    <mat-label class="center">Enter your Stock</mat-label>
+<form>
+  <mat-form-field>
+    <mat-label>Search a Stock</mat-label>
     <input type="text"
-           placeholder="Pick one"
-           aria-label="Stock"
            matInput
            [formControl]="inputFormControl"
            [matAutocomplete]="auto"
-           (keyup)="onTypingHandler()"
+           (input)="onTypingHandler()"
            (keyup.enter)="onSelectionHandler()">
+
     <mat-autocomplete #auto="matAutocomplete">
       @for (option of autoCompleteData; track option) {
         <mat-option [value]="option[0]" (click)="onSelectionHandler()">{{option[0]}} | {{option[1]}}</mat-option>
