@@ -9,7 +9,7 @@ import { DailyData, MonthlyData } from '../models/data.model';
 })
 export class RequestService {
 
-  private apiKey = "demo" //"NKHGL9O85N1MO7O8";
+  private apiKey = "NKHGL9O85N1MO7O8" //"demo";
 
   constructor() { }
 

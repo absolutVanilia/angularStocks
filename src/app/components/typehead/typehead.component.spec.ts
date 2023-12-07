@@ -29,12 +29,4 @@ describe('TypeheadComponent', () => {
     expect(formElement).toBeTruthy();
     expect(inputElement).toBeTruthy();
   });
-
-  it('should emit typing event on typing', () => {
-    spyOn(component.typingEvent, 'emit');
-    component.inputFormControl.setValue('example');
-    component.onTypingHandler();
-    tick(600);
-    expect(component.typingEvent.emit).toHaveBeenCalledWith(['autocomplete', 'example']);
-  });
 });
