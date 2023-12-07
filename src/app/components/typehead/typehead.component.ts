@@ -27,7 +27,7 @@ export class TypeheadComponent {
   });
 
   @Output() typingEvent = new EventEmitter();
-  @Output() onSelection = new EventEmitter();
+  @Output() selectionEvent = new EventEmitter();
   @Input()  autoCompleteData!: [[string, string]];
   @Input() toggleMode!: string;
 
@@ -41,6 +41,6 @@ export class TypeheadComponent {
   }
 
   onSelectionHandler() {
-    this.onSelection.emit([this.toggleMode, this.inputFormControl.value]);
+    this.selectionEvent.emit([this.toggleMode, this.inputFormControl.value]);
   }
 }

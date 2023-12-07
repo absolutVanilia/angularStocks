@@ -10,7 +10,10 @@
 
     <mat-autocomplete #auto="matAutocomplete">
       @for (option of autoCompleteData; track option) {
-        <mat-option [value]="option[0]" (click)="onSelectionHandler()">{{option[0]}} | {{option[1]}}</mat-option>
+        <mat-option [value]="option[0]" 
+                    (click)="onSelectionHandler()">
+                    {{option[0]}} | {{option[1]}}
+        </mat-option>
       }
     </mat-autocomplete>
   </mat-form-field>

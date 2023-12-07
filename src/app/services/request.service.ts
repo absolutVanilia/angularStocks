@@ -30,5 +30,7 @@ export class RequestService {
     }
     return this.http.get(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=a&apikey=${this.apiKey}`);
   }
-
+  
 }
+
+

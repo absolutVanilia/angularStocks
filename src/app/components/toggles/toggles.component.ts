@@ -12,8 +12,8 @@ export class TogglesComponent {
 
    @Output() onToggle = new EventEmitter();
 
-   onToggleHandler(event: any) {
-     this.onToggle.emit((event.target as HTMLLabelElement).innerText.toLocaleLowerCase());
+   onToggleHandler(eventTarget: any) {
+     this.onToggle.emit(eventTarget.innerText.toLocaleLowerCase());
    }
 
 }

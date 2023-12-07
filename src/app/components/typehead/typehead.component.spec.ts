@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { TypeheadComponent } from './typehead.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Input } from '@angular/core';
@@ -34,6 +34,7 @@ describe('TypeheadComponent', () => {
     spyOn(component.typingEvent, 'emit');
     component.inputFormControl.setValue('example');
     component.onTypingHandler();
+    tick(600);
     expect(component.typingEvent.emit).toHaveBeenCalledWith(['autocomplete', 'example']);
   });
 });

@@ -32,27 +32,63 @@ export class AppComponent {
   dataChart!: ChartData[];
   toggleMode: string = "daily";
 
+  //change alert render state
   changeAlertRender(){
     this.alertRenderStatus = false;
   }
+  
+  //call the API for Autocomplete
+  typeheadAutocompleteListener(event: ['autocomplete', string]) {
 
-  private processAutocompleteData(data: any) {
-    this.processedAutocompleteData.length = 0;
-    if(data.hasOwnProperty('Information')){
-      this.alertMessage.set('You are out of API tokens.')
-      this.alertRenderStatus = true;
-      setTimeout(()=>{this.changeAlertRender()}, 3000);
-    }
-
-    if(data["bestMatches"].length){
-      for (let match in data["bestMatches"]) {
-        this.processedAutocompleteData.push([data["bestMatches"][match]["1. symbol"], data["bestMatches"][match]["2. name"]]);
+    this.requestService.getData(event[0], event[1]).subscribe({
+      next: (data: any) => {
+        this.processedAutocompleteData.length = 0;
+        if(data.hasOwnProperty('Information')){
+          this.alertMessage.set('You are out of API tokens.')
+          this.alertRenderStatus = true;
+          setTimeout(()=>{this.changeAlertRender()}, 3000);
+        }
+    
+        if(data["bestMatches"].length){
+          for (let match in data["bestMatches"]) {
+            this.processedAutocompleteData.push([data["bestMatches"][match]["1. symbol"], data["bestMatches"][match]["2. name"]]);
+          }
+        } else {
+          this.alertMessage.set('There are no matches for your search')
+          this.alertRenderStatus = true;
+          setTimeout(()=>{this.changeAlertRender()}, 3000);
+        }
+      },
+      error: (error) => {
+        console.error(error);
       }
-    } else {
-      this.alertMessage.set('There are no matches for your search')
-      this.alertRenderStatus = true;
-      setTimeout(()=>{this.changeAlertRender()}, 3000);
+    });
+  }
+
+  // Call the API for the chart data
+  typeheadListener(event: [RequestType, string]) {
+
+    if (event[1] !== this.symbol && (event[0] === "daily" || event[0] === "monthly")) {
+      this.symbol = event[1];
+      this.processedDailyData.length = 0;
+      this.processedMonthlyData.length = 0;
     }
+    
+    this.requestService.getData(event[0], event[1]).subscribe({
+      next: (data: any) => {
+        switch (event[0]) {
+          case "daily":
+            this.processChartData("daily", data);
+            break;
+          case "monthly":
+            this.processChartData("monthly", data);
+            break;
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   private processChartData(type: RequestType, data: any) {
@@ -113,34 +149,7 @@ export class AppComponent {
 
       this.processedMonthlyData = result;
       this.dataChart = result;
-  }
-}
-
-  typeheadListener(event: [RequestType, string]) {
-    if (event[1] !== this.symbol && (event[0] === "daily" || event[0] === "monthly")) {
-      this.symbol = event[1];
-      this.processedDailyData.length = 0;
-      this.processedMonthlyData.length = 0;
     }
-    
-    this.requestService.getData(event[0], event[1]).subscribe({
-      next: (data: any) => {
-        switch (event[0]) {
-          case "autocomplete":
-            this.processAutocompleteData(data);
-            break;
-          case "daily":
-            this.processChartData("daily", data);
-            break;
-          case "monthly":
-            this.processChartData("monthly", data);
-            break;
-        }
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
   }
 
   onTogglesListener(event: string) {
